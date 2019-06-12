@@ -1,0 +1,38 @@
+1¡¢±àÒëlibnl£º
+rm lib/libnl.a
+
+./configure --prefix=/home/ywmen/android/test/wpa_supplicant-2.6/out/
+
+make CC=arm-linux-gcc AR=arm-linux-ar LD=arm-linux-ld
+
+2¡¢±àÒëopenssl:
+./config no-asm shared  --prefix=/home/ywmen/android/test/wpa_supplicant-2.6/out
+
+ÐÞ¸ÄMakefile£º
+CC= arm-linux-gcc
+AR= arm-linux-ar $(ARFLAGS) r
+
+RANLIB= arm-linux-ranlib
+
+NM= arm-linux-nm
+
+É¾³ý-m64»ò¸ÄÎªm32
+
+
+3¡¢±àÒëwpa_supplicant:
+
+cp defconfig .config
+ÐÞ¸Ä.config
+CC= arm-linux-gcc -L/home/ywmen/android/test/wpa_supplicant-2.6/out/lib
+CFLAGS += -I/home/ywmen/android/test/wpa_supplicant-2.6/out/include
+LIBS += -L/home/ywmen/android/test/wpa_supplicant-2.6/out/lib
+
+
+ÐÞ¸ÄMakefile£¬¾²Ì¬±àÒë£º
+wpa_supplicant: $(BCHECK) $(OBJS) $(EXTRA_progs)
+	$(Q)$(LDO) --static $(LDFLAGS) -o wpa_supplicant $(OBJS) $(LIBS) $(EXTRALIBS)  -lm -lpthread 
+	
+wpa_cli: $(OBJS_c)
+	$(Q)$(LDO) --static $(LDFLAGS) -o wpa_cli $(OBJS_c) $(LIBS_c) $(EXTRALIBS) -lm -lpthread 
+	
+4¡¢Ê¹ÓÃarm-linux-strip ³ÌÐò
